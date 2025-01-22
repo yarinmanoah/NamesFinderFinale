@@ -25,10 +25,9 @@ import retrofit2.Response;
 
 public class ActivityByCategory extends AppCompatActivity {
     private Button BycategoryButtonBack, searchButton;
-    private TextView BycategoryLBL;
+    private TextView ByCatgoryLBL;
     private Spinner letterSpinner;
     private String selectedCategory;
-    private RecyclerView recyclerViewNames;
     private NamesAdapter namesAdapter;
     private NameAPI nameAPI;
 
@@ -39,11 +38,6 @@ public class ActivityByCategory extends AppCompatActivity {
 
         // Initialize views
         findViews();
-
-        // Set up RecyclerView for displaying the names
-        recyclerViewNames.setLayoutManager(new LinearLayoutManager(this));
-        namesAdapter = new NamesAdapter();
-        recyclerViewNames.setAdapter(namesAdapter);
 
         // Initialize NameAPI
         nameAPI = NameRetrofit.getInstance().getNameApi();
@@ -61,7 +55,7 @@ public class ActivityByCategory extends AppCompatActivity {
         BycategoryButtonBack = findViewById(R.id.BycategoryButtonBack);
         letterSpinner = findViewById(R.id.letterSpinner);
         searchButton = findViewById(R.id.searchButton);
-        recyclerViewNames = findViewById(R.id.recyclerViewNames); // Add this for RecyclerView
+        ByCatgoryLBL = findViewById(R.id.ByCatgoryLBL);
     }
 
     private void initViews() {
@@ -96,8 +90,7 @@ public class ActivityByCategory extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Name>> call, Response<List<Name>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<Name> names = response.body();
-                    namesAdapter.setNames(names); // Update RecyclerView with fetched names
+                    updateNames(response.body());
                     Toast.makeText(ActivityByCategory.this, "Names fetched successfully!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(ActivityByCategory.this, "Failed to fetch names!", Toast.LENGTH_SHORT).show();
@@ -109,5 +102,12 @@ public class ActivityByCategory extends AppCompatActivity {
                 Toast.makeText(ActivityByCategory.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    public void updateNames(List<Name> names) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Name name : names) {
+            stringBuilder.append(name.getContent()).append("\n"); // Get the content of the Name object
+        }
+        ByCatgoryLBL.setText(stringBuilder.toString());
     }
 }

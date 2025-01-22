@@ -33,22 +33,33 @@
             android:layout_marginBottom="20dp"/>
     </LinearLayout>
 
-    <!-- RecyclerView for displaying names -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewNames"
+    <!-- ScrollView for TextView -->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="400dp"
         android:layout_below="@id/letterSpinner"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="150dp"
+        android:layout_centerHorizontal="true">
+
+    <TextView
+        android:id="@+id/ByCatgoryLBL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Centered Text"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:lineSpacingExtra="10dp"
+        android:padding="15dp"
+        android:gravity="center" />
+</ScrollView>
 
     <!-- Back Button -->
-    <Button
-        android:id="@+id/BycategoryButtonBack"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:text="Back"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"/>
-</RelativeLayout>
+<Button
+android:id="@+id/BycategoryButtonBack"
+android:layout_width="100dp"
+android:layout_height="wrap_content"
+android:text="Back"
+android:layout_alignParentStart="true"
+android:layout_marginStart="15dp"
+android:layout_marginTop="15dp"/>
+    </RelativeLayout>
