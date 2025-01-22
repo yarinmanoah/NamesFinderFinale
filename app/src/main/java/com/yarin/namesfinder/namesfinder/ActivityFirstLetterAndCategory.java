@@ -98,7 +98,7 @@ public class ActivityFirstLetterAndCategory extends AppCompatActivity {
     }
 
     private void fetchNamesByCategoryAndLetter(String category, String letter) {
-        nameAPI.listByLetterAndCategory(category, letter).enqueue(new Callback<List<Name>>() {
+        nameAPI.listByLetterAndCategory(letter, category).enqueue(new Callback<List<Name>>() {
             @Override
             public void onResponse(Call<List<Name>> call, Response<List<Name>> response) {
                 if (response.isSuccessful() && response.body() != null) {

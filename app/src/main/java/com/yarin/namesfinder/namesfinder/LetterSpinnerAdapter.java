@@ -79,4 +79,13 @@ public class LetterSpinnerAdapter extends ArrayAdapter<String> {
 
         return convertView;
     }
+
+    public int findPositionIgnoreCase(String letter) {
+        for (int i = 0; i < letters.size(); i++) {
+            if (letters.get(i).equalsIgnoreCase(letter)) {
+                return i;
+            }
+        }
+        return -1; // Not found
+    }
 }

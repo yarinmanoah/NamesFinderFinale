@@ -37,7 +37,6 @@ public class CategorySpinnerAdapter extends ArrayAdapter<String> {
         categories.add("common");
         categories.add("popular");
 
-
     }
 
     @Override
@@ -81,5 +80,17 @@ public class CategorySpinnerAdapter extends ArrayAdapter<String> {
         textView.setPadding(8, 8, 8, 8); // Add padding for better appearance
 
         return convertView;
+    }
+
+    /**
+     * Finds the position of a category in the spinner, case-insensitively.
+     */
+    public int findPositionIgnoreCase(String category) {
+        for (int i = 0; i < categories.size(); i++) {
+            if (categories.get(i).equalsIgnoreCase(category)) {
+                return i;
+            }
+        }
+        return -1; // Not found
     }
 }
