@@ -15,7 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NameController {
 
-    static final String BASE_URL = "https://pastebin.com/"; // Ensure this is the correct base URL
+    static final String BASE_URL = "https://names-finder-finale.vercel.app"; // Ensure this is the correct base URL
     List<String> nameContents;
     private CallBack_Name callBackNames;
 
@@ -23,7 +23,7 @@ public class NameController {
         this.callBackNames = callBackNames;
     }
 
-    public void fetchAllName() {
+    private NameAPI getAPI(){
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
@@ -32,7 +32,11 @@ public class NameController {
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
-        NameAPI nameAPI = retrofit.create(NameAPI.class);
+        return retrofit.create(NameAPI.class);
+    }
+
+    public void fetchAllName() {
+        NameAPI nameAPI = getAPI();
 
         Call<List<Name>> call = nameAPI.listAllNames();
         call.enqueue(new Callback<List<Name>>() {
@@ -57,15 +61,7 @@ public class NameController {
     }
 
     public void fetchByLetter(String letter) {
-        Gson gson = new GsonBuilder()
-                .setLenient()
-                .create();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-        NameAPI nameAPI = retrofit.create(NameAPI.class);
+        NameAPI nameAPI = getAPI();
 
         Call<List<Name>> call = nameAPI.listByLetter(letter);
         call.enqueue(new Callback<List<Name>>() {
@@ -89,15 +85,7 @@ public class NameController {
     }
 
     public void fetchByCategory(String category) {
-        Gson gson = new GsonBuilder()
-                .setLenient()
-                .create();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-        NameAPI nameAPI = retrofit.create(NameAPI.class);
+        NameAPI nameAPI = getAPI();
 
         Call<List<Name>> call = nameAPI.listByCategory(category);
         call.enqueue(new Callback<List<Name>>() {
@@ -121,15 +109,7 @@ public class NameController {
     }
 
     public void fetchByCategoryAndLetter(String category, String letter) {
-        Gson gson = new GsonBuilder()
-                .setLenient()
-                .create();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-        NameAPI nameAPI = retrofit.create(NameAPI.class);
+        NameAPI nameAPI = getAPI();
 
         Call<List<Name>> call = nameAPI.listByLetterAndCategory(letter, category);
         call.enqueue(new Callback<List<Name>>() {
@@ -153,15 +133,7 @@ public class NameController {
     }
 
     public void fetchByRandom() {
-        Gson gson = new GsonBuilder()
-                .setLenient()
-                .create();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-        NameAPI nameAPI = retrofit.create(NameAPI.class);
+        NameAPI nameAPI = getAPI();
 
         Call<Name> call = nameAPI.listRandomName();
         call.enqueue(new Callback<Name>() {

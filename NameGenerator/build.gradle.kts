@@ -1,5 +1,6 @@
 plugins {
     id("com.android.library")
+    id ("maven-publish")
 }
 
 android {
@@ -25,6 +26,42 @@ android {
     }
 }
 
+afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("release") {
+                groupId = "com.yarin.namesfinder"
+                artifactId = "NameGenerator"
+                version = "1.0.0"
+
+                artifact(tasks.getByName("bundleReleaseAar"))
+
+                pom {
+                    withXml {
+                        val dependenciesNode = asNode().appendNode("dependencies")
+                        configurations.api.get().dependencies.forEach { dependency ->
+                            val dependencyNode = dependenciesNode.appendNode("dependency")
+                            dependencyNode.appendNode("groupId", dependency.group)
+                            dependencyNode.appendNode("artifactId", dependency.name)
+                            dependencyNode.appendNode("version", dependency.version)
+                            dependencyNode.appendNode("scope", "compile")
+                        }
+                        configurations.implementation.get().dependencies.forEach { dependency ->
+                            val dependencyNode = dependenciesNode.appendNode("dependency")
+                            dependencyNode.appendNode("groupId", dependency.group)
+                            dependencyNode.appendNode("artifactId", dependency.name)
+                            dependencyNode.appendNode("version", dependency.version)
+                            dependencyNode.appendNode("scope", "runtime")
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
 dependencies {
 
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -33,10 +70,10 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
-    implementation ("com.google.code.gson:gson:2.10.1")
 
     // Rest API calls
 
-    implementation ("com.squareup.retrofit2:retrofit:2.1.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.1.0")
+    implementation ("com.google.code.gson:gson:2.10.1")
+    implementation ("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.11.0")
 }

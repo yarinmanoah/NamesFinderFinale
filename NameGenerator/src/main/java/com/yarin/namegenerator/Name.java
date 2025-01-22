@@ -1,13 +1,19 @@
 package com.yarin.namegenerator;
 
 public class Name {
+    private int id;
     private String firstChar;
     private String content;
     private String category;
-    private int id;
 
     // Private constructor to prevent direct instantiation
-    private Name() {}
+    public Name() {}
+
+    public Name(String firstChar, String content, String category) {
+        this.firstChar = firstChar;
+        this.content = content;
+        this.category = category;
+    }
 
     // Getter methods
     public String getFirstChar() {
@@ -64,6 +70,16 @@ public class Name {
             name.category = this.category;
             name.id = this.id;
             return name;
+        }
+
+        @Override
+        public String toString() {
+            return "Builder{" +
+                    "firstChar='" + firstChar + "\n" +
+                    ", content='" + content + "\n" +
+                    ", category='" + category + "\n" +
+                    ", id=" + id +
+                    '}';
         }
     }
 }
