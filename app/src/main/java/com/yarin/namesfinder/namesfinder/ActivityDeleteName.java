@@ -1,7 +1,11 @@
 package com.yarin.namesfinder.namesfinder;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -12,6 +16,7 @@ import com.yarin.namegenerator.NameAPI;
 import com.yarin.namegenerator.NameRetrofit;
 import com.yarin.namesfinder.R;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -19,7 +24,7 @@ import retrofit2.Response;
 public class ActivityDeleteName extends AppCompatActivity {
 
     private EditText etIdToDelete;  // EditText to enter the ID to delete
-    private Button btnDelete;      // Button to delete the name
+    private Button btnDelete,  btnDeleteBack;    // Button to delete the name
     private NameAPI nameAPI;       // Retrofit API interface
 
     @Override
@@ -38,7 +43,9 @@ public class ActivityDeleteName extends AppCompatActivity {
     private void findViews() {
         etIdToDelete = findViewById(R.id.etIdToDelete);
         btnDelete = findViewById(R.id.btnDelete);
+        btnDeleteBack = findViewById(R.id.btnDeleteBack);
     }
+
 
     private void initViews() {
         // Handle button click to delete the name by ID
@@ -50,13 +57,15 @@ public class ActivityDeleteName extends AppCompatActivity {
                 Toast.makeText(ActivityDeleteName.this, "Please enter an ID to delete", Toast.LENGTH_SHORT).show();
             }
         });
+        btnDeleteBack.setOnClickListener(v -> finish());
+
     }
 
     private void deleteNameById(String id) {
         // Call the deleteName API method
-        nameAPI.deleteName(id).enqueue(new Callback<Void>() {
+        nameAPI.deleteName(id).enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(ActivityDeleteName.this, "Name deleted successfully!", Toast.LENGTH_SHORT).show();
                     finish(); // Close the activity after deletion
@@ -67,7 +76,7 @@ public class ActivityDeleteName extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Toast.makeText(ActivityDeleteName.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.e("DeleteName", "Error deleting name: " + t.getMessage());
             }

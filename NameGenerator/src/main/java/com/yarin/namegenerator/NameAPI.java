@@ -1,6 +1,8 @@
 package com.yarin.namegenerator;
 
 import java.util.List;
+
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -37,10 +39,10 @@ public interface NameAPI {
 
         // 6. Add Name
         @POST("add_name")
-        Call<Void> addName(@Body Name newName);
+        Call<ResponseBody> addName(@Body Name newName);
 
         // 7. Delete Name
         @DELETE("delete_name/{id}")
-        Call<Void> deleteName(@Path("id") String id);
+        Call<ResponseBody> deleteName(@Path("id") String id);
 }
 

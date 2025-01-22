@@ -2,15 +2,15 @@ package com.yarin.namegenerator;
 
 public class Name {
     private String _id;
-    private String firstChar;
+    private String FirstChar;
     private String content;
     private String category;
 
     // Private constructor to prevent direct instantiation
     public Name() {}
 
-    public Name(String firstChar, String category , String content) {
-        this.firstChar = firstChar;
+    public Name(String FirstChar, String content , String category) {
+        this.FirstChar = FirstChar;
         this.category = category;
         this.content = content;
 
@@ -18,7 +18,7 @@ public class Name {
 
     // Getter methods
     public String getFirstChar() {
-        return firstChar;
+        return FirstChar;
     }
 
     public String getContent() {
@@ -35,7 +35,7 @@ public class Name {
 
     // Builder class
     public static class Builder {
-        private String firstChar;
+        private String FirstChar;
         private String content;
         private String category;
         private String _id;
@@ -43,8 +43,8 @@ public class Name {
         public Builder() {}
 
         // Setter methods for the Builder
-        public Builder setFirstChar(String firstChar) {
-            this.firstChar = firstChar;
+        public Builder setFirstLetter(String FirstChar) {
+            this.FirstChar = FirstChar;
             return this;
         }
 
@@ -66,7 +66,7 @@ public class Name {
         // Build method to create a Name instance
         public Name build() {
             Name name = new Name();
-            name.firstChar = this.firstChar;
+            name.FirstChar = this.FirstChar;
             name.content = this.content;
             name.category = this.category;
             name._id = this._id;
@@ -76,7 +76,7 @@ public class Name {
         @Override
         public String toString() {
             return "Builder{" +
-                    "firstChar='" + firstChar + "\n" +
+                    "firstChar='" + FirstChar + "\n" +
                     ", content='" + content + "\n" +
                     ", category='" + category + "\n" +
                     ", id=" + _id +

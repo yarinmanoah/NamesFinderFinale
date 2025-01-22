@@ -1,12 +1,13 @@
 package com.yarin.namesfinder.namesfinder;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.yarin.namegenerator.Name;
@@ -18,13 +19,12 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+
 
 public class ActivityAddName extends AppCompatActivity {
 
     private EditText etName, etFirstLetter, etCategory; // EditText to enter name, first letter, and category
-    private Button btnAdd; // Button to submit the new name
+    private Button btnAdd,  btnAddBack; // Button to submit the new name
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +34,7 @@ public class ActivityAddName extends AppCompatActivity {
         findViews();
 
         btnAdd.setOnClickListener(v -> addName());
+        btnAddBack.setOnClickListener(this::goBackToHome);
 
     }
 
@@ -43,20 +44,27 @@ public class ActivityAddName extends AppCompatActivity {
         etFirstLetter = findViewById(R.id.etFirstLetter);
         etCategory = findViewById(R.id.etCategory);
         btnAdd = findViewById(R.id.btnAdd);
+        btnAddBack = findViewById(R.id.btnAddBack);
+    }
+
+    public void goBackToHome(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
 
     private void addName(){
-            String content = etName.getText().toString();
-            String firstLetter = etFirstLetter.getText().toString();
-            String category = etCategory.getText().toString();
+        String FirstChar = etFirstLetter.getText().toString();
+        String content = etName.getText().toString();
+        String category = etCategory.getText().toString();
 
-            if (content.isEmpty() && firstLetter.isEmpty() && category.isEmpty()) {
+            if (content.isEmpty() || FirstChar.isEmpty() || category.isEmpty()) {
                 Toast.makeText(ActivityAddName.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
             return;
              }
 
-            Name name = new Name(firstLetter,category,content);
+            Name name = new Name(FirstChar,content,category);
 
             NameAPI nameAPI = NameRetrofit.getInstance().getNameApi();
 

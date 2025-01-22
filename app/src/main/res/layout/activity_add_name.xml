@@ -36,4 +36,12 @@
         android:layout_height="wrap_content"
         android:text="Add Name"
         android:layout_marginTop="20dp" />
+
+    <!-- Back button -->
+    <Button
+        android:id="@+id/btnAddBack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:layout_marginTop="10dp" />
 </LinearLayout>

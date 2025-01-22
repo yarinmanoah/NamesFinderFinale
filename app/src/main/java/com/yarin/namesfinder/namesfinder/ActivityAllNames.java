@@ -70,7 +70,7 @@ public class ActivityAllNames extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<Name>> call, Throwable t) {
                 Toast.makeText(ActivityAllNames.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e("FetchAllActivity", "Error fetching pets: " + t.getMessage());
+                Log.e("FetchAllActivity", "Error fetching names: " + t.getMessage());
             }
 
             });
