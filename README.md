@@ -164,11 +164,16 @@ project/
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
+## Video Demonstration
+
+
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details
+Copyright (c) 2024 Yarin Manoah
+
 
 ## Contact
 
-Your Name - your.email@example.com
-Project Link: [https://github.com/yourusername/your-repo-name](https://github.com/yourusername/your-repo-name)
+Yarin Manoah - yarinmanoah1443@gmail.com
+Project Link: https://github.com/yarinmanoah/NamesFinderFinale
