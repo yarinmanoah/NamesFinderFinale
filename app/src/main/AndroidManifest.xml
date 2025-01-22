@@ -30,6 +30,12 @@
             android:name=".namesfinder.ActivityAllNames"
             android:exported="false" />
         <activity
+            android:name=".namesfinder.ActivityAddName"
+            android:exported="false" />
+        <activity
+            android:name=".namesfinder.ActivityDeleteName"
+            android:exported="false" />
+        <activity
             android:name=".namesfinder.MainActivity"
             android:exported="true">
             <intent-filter>

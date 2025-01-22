@@ -5,6 +5,7 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+    <!-- Name Input -->
     <EditText
         android:id="@+id/etName"
         android:layout_width="match_parent"
@@ -12,6 +13,23 @@
         android:hint="Enter Name"
         android:inputType="text" />
 
+    <!-- First Letter Input -->
+    <EditText
+        android:id="@+id/etFirstLetter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter First Letter"
+        android:inputType="text" />
+
+    <!-- Category Input -->
+    <EditText
+        android:id="@+id/etCategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Category"
+        android:inputType="text" />
+
+    <!-- Add Name Button -->
     <Button
         android:id="@+id/btnAdd"
         android:layout_width="match_parent"

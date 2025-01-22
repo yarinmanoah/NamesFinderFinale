@@ -9,10 +9,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.yarin.namegenerator.NameController;
+import com.yarin.namegenerator.Name;
+import com.yarin.namegenerator.NameAPI;
+import com.yarin.namegenerator.NameRetrofit;
 import com.yarin.namesfinder.R;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ActivityFirstLetterAndCategory extends AppCompatActivity {
     private String selectedLetter;
@@ -21,12 +27,15 @@ public class ActivityFirstLetterAndCategory extends AppCompatActivity {
     private Spinner categorySpinner;
     private Button a_ByFirstLetterButtonBack;
     private Button a_searchButton;
-    private TextView ByFirstLetterAndCategortLBL;
+    private TextView ByFirstLetterAndCategoryLBL;
+    private NameAPI nameAPI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_letter_and_category);
+
+        // Initialize views and variables
         findViews();
         initViews();
 
@@ -37,7 +46,6 @@ public class ActivityFirstLetterAndCategory extends AppCompatActivity {
         letterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // Save the selected letter
                 selectedLetter = (String) parent.getItemAtPosition(position);
             }
 
@@ -54,7 +62,6 @@ public class ActivityFirstLetterAndCategory extends AppCompatActivity {
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // Save the selected category
                 selectedCategory = (String) parent.getItemAtPosition(position);
             }
 
@@ -63,24 +70,20 @@ public class ActivityFirstLetterAndCategory extends AppCompatActivity {
                 selectedCategory = null;
             }
         });
+
+        // Initialize the API
+        nameAPI = NameRetrofit.getInstance().getNameApi();
     }
 
     private void initViews() {
+        // Back button click listener
         a_ByFirstLetterButtonBack.setOnClickListener(v -> finish());
-        MyCallback myCallback = new MyCallback(ActivityFirstLetterAndCategory.this);
 
-        // Create an instance of NameController
-        NameController nameController = new NameController(myCallback);
-
+        // Search button click listener
         a_searchButton.setOnClickListener(v -> {
-            // Check if both letter and category are selected
             if (selectedLetter != null && selectedCategory != null) {
-                // Perform your action here, for example:
-                nameController.fetchByCategoryAndLetter(selectedCategory,selectedLetter);
-                String message = "Selected Letter: " + selectedLetter + ", Selected Category: " + selectedCategory;
-                //Toast.makeText(ActivityFirstLetterAndCategory.this, message, Toast.LENGTH_SHORT).show();
+                fetchNamesByCategoryAndLetter(selectedCategory, selectedLetter);
             } else {
-                // Handle case where not both are selected
                 Toast.makeText(ActivityFirstLetterAndCategory.this, "Please select both Letter and Category", Toast.LENGTH_SHORT).show();
             }
         });
@@ -91,13 +94,32 @@ public class ActivityFirstLetterAndCategory extends AppCompatActivity {
         letterSpinner = findViewById(R.id.a_letterSpinner);
         categorySpinner = findViewById(R.id.a_categorySpinner);
         a_searchButton = findViewById(R.id.a_searchButton);
-        ByFirstLetterAndCategortLBL = findViewById(R.id.ByFirstLetterAndCategortLBL);
+        ByFirstLetterAndCategoryLBL = findViewById(R.id.ByFirstLetterAndCategortLBL);
     }
-    public void updateNames(List<String> names) {
+
+    private void fetchNamesByCategoryAndLetter(String category, String letter) {
+        nameAPI.listByLetterAndCategory(category, letter).enqueue(new Callback<List<Name>>() {
+            @Override
+            public void onResponse(Call<List<Name>> call, Response<List<Name>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    updateNames(response.body());
+                } else {
+                    Toast.makeText(ActivityFirstLetterAndCategory.this, "No names found for the selected filters.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Name>> call, Throwable t) {
+                Toast.makeText(ActivityFirstLetterAndCategory.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void updateNames(List<Name> names) {
         StringBuilder stringBuilder = new StringBuilder();
-        for (String name : names) {
-            stringBuilder.append(name).append("\n");
+        for (Name name : names) {
+            stringBuilder.append(name.getContent()).append("\n");
         }
-        ByFirstLetterAndCategortLBL.setText(stringBuilder.toString());
+        ByFirstLetterAndCategoryLBL.setText(stringBuilder.toString());
     }
 }

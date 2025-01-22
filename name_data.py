@@ -6,6 +6,18 @@ import random
 # Initialize Blueprint
 names_blueprint = Blueprint('Names', __name__)
 
+# Helper function to format names
+def format_name(name):
+    """
+    Format a single name by reordering fields and removing 'id'.
+    """
+    return {
+        "_id": str(name["_id"]),
+        "FirstChar": name["FirstChar"],
+        "category": name["category"],
+        "content": name["content"]
+    }
+
 # 1. List All Names
 @names_blueprint.route('/list_all_names', methods=['GET'])
 def list_all_names():
@@ -22,9 +34,8 @@ def list_all_names():
     names_collection = db['names']
     try:
         names = list(names_collection.find())
-        for name in names:
-            name['_id'] = str(name['_id'])
-        return jsonify(names), 200
+        formatted_names = [format_name(name) for name in names]
+        return jsonify(formatted_names), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -52,10 +63,9 @@ def list_by_letter(char):
     names_collection = db['names']
     try:
         names = list(names_collection.find({"FirstChar": char}))
-        for name in names:
-            name['_id'] = str(name['_id'])
-        if names:
-            return jsonify(names), 200
+        formatted_names = [format_name(name) for name in names]
+        if formatted_names:
+            return jsonify(formatted_names), 200
         return jsonify({"error": "No names found"}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -84,10 +94,9 @@ def list_by_category(category):
     names_collection = db['names']
     try:
         names = list(names_collection.find({"category": category}))
-        for name in names:
-            name['_id'] = str(name['_id'])
-        if names:
-            return jsonify(names), 200
+        formatted_names = [format_name(name) for name in names]
+        if formatted_names:
+            return jsonify(formatted_names), 200
         return jsonify({"error": "No names found"}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -123,10 +132,9 @@ def list_by_letter_and_category():
     category = request.args.get('category')
     try:
         names = list(names_collection.find({"FirstChar": letter, "category": category}))
-        for name in names:
-            name['_id'] = str(name['_id'])
-        if names:
-            return jsonify(names), 200
+        formatted_names = [format_name(name) for name in names]
+        if formatted_names:
+            return jsonify(formatted_names), 200
         return jsonify({"error": "No names found"}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -148,8 +156,7 @@ def list_random_name():
     try:
         names = list(names_collection.find())
         if names:
-            random_name = random.choice(names)
-            random_name['_id'] = str(random_name['_id'])
+            random_name = format_name(random.choice(names))
             return jsonify(random_name), 200
         return jsonify({"error": "No names found"}), 404
     except Exception as e:
@@ -188,7 +195,7 @@ def add_name():
     names_collection = db['names']
     try:
         data = request.json
-        required_fields = ['FirstChar', 'content', 'category', 'id']
+        required_fields = ['FirstChar', 'content', 'category']
 
         # Validate required fields
         if not data or not all(field in data for field in required_fields):
@@ -196,7 +203,9 @@ def add_name():
 
         name = {
             "_id": str(uuid.uuid4()),
-            **data
+            "FirstChar": data["FirstChar"],
+            "content": data["content"],
+            "category": data["category"]
         }
         names_collection.insert_one(name)
         return jsonify({"message": "Name added successfully", "_id": name["_id"]}), 201

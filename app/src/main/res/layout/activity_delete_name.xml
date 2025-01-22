@@ -5,13 +5,15 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+    <!-- Input Field for ID -->
     <EditText
-        android:id="@+id/etNameToDelete"
+        android:id="@+id/etIdToDelete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter Name to Delete"
+        android:hint="Enter ID to Delete"
         android:inputType="text" />
 
+    <!-- Button for Deleting Name -->
     <Button
         android:id="@+id/btnDelete"
         android:layout_width="match_parent"

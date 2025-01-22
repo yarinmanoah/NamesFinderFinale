@@ -10,25 +10,34 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.yarin.namegenerator.NameController;
+import com.yarin.namegenerator.Name;
+import com.yarin.namegenerator.NameAPI;
+import com.yarin.namegenerator.NameRetrofit;
 import com.yarin.namesfinder.R;
 
 import java.util.List;
 
-public class ActivityFirstLetter extends AppCompatActivity {
-    private String selectedLetter;
-    Spinner  letterSpinner;
-    Button searchButton,ByFirstLetterButtonBack;
-    TextView ByFirstLetterLBL;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
+public class ActivityFirstLetter extends AppCompatActivity {
+    private String selectedLetter; // Holds the selected letter
+    private Spinner letterSpinner;
+    private Button searchButton, ByFirstLetterButtonBack;
+    private TextView ByFirstLetterLBL;
+    private NameAPI nameAPI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_letter);
+
+        // Initialize views
         findViews();
         initViews();
 
+        // Set up spinner adapter
         LetterSpinnerAdapter adapter = new LetterSpinnerAdapter(this, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         letterSpinner.setAdapter(adapter);
@@ -47,41 +56,55 @@ public class ActivityFirstLetter extends AppCompatActivity {
             }
         });
 
-        MyCallback myCallback = new MyCallback(ActivityFirstLetter.this);
+        // Initialize the API
+        nameAPI = NameRetrofit.getInstance().getNameApi();
 
-        // Create an instance of NameController
-        NameController nameController = new NameController(myCallback);
-
-        // Now you can use the selectedLetter wherever needed
-        // For example, if you want to fetch names when a button is clicked
-         searchButton = findViewById(R.id.searchButton);
+        // Fetch names on button click
         searchButton.setOnClickListener(v -> {
-            // Check if a letter is selected
-            if (selectedLetter != null) {
-                // Use the selected letter to fetch names
-                nameController.fetchByLetter(selectedLetter);
-
+            if (selectedLetter != null && !selectedLetter.isEmpty()) {
+                fetchByLetter(selectedLetter);
             } else {
-                // Handle case where no letter is selected
                 Toast.makeText(ActivityFirstLetter.this, "Please select a letter", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
     private void findViews() {
-        ByFirstLetterButtonBack=findViewById(R.id.ByFirstLetterButtonBack);
+        ByFirstLetterButtonBack = findViewById(R.id.ByFirstLetterButtonBack);
         letterSpinner = findViewById(R.id.letterSpinner);
         ByFirstLetterLBL = findViewById(R.id.ByFirstLetterLBL);
-
-
+        searchButton = findViewById(R.id.searchButton);
     }
+
     private void initViews() {
         ByFirstLetterButtonBack.setOnClickListener(v -> finish());
     }
-    public void updateNames(List<String> names) {
+
+    private void fetchByLetter(String letter) {
+        nameAPI.listByLetter(letter).enqueue(new Callback<List<Name>>() {
+            @Override
+            public void onResponse(Call<List<Name>> call, Response<List<Name>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    // Update the names in the TextView
+                    updateNames(response.body());
+                    Toast.makeText(ActivityFirstLetter.this, "Names fetched successfully!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(ActivityFirstLetter.this, "Failed to fetch names!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Name>> call, Throwable t) {
+                Toast.makeText(ActivityFirstLetter.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void updateNames(List<Name> names) {
         StringBuilder stringBuilder = new StringBuilder();
-        for (String name : names) {
-            stringBuilder.append(name).append("\n");
+        for (Name name : names) {
+            stringBuilder.append(name.getContent()).append("\n"); // Get the content of the Name object
         }
         ByFirstLetterLBL.setText(stringBuilder.toString());
     }
-    }
+}
