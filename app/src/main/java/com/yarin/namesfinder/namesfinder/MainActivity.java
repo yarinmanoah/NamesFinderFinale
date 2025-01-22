@@ -16,6 +16,8 @@ public class MainActivity extends AppCompatActivity {
     private Button btnListByCategory;
     private Button btnLetterCategory;
     private Button btnListByRandom;
+    private Button btnAddName;
+    private Button btnDeleteName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
         btnListByCategory = findViewById(R.id.btnListByCategory);
         btnLetterCategory = findViewById(R.id.btnLetterCategory);
         btnListByRandom = findViewById(R.id.btnListByRandom);
+        btnAddName = findViewById(R.id.btnAddName);
+        btnDeleteName = findViewById(R.id.btnDeleteName);
     }
 
     // Initialize button click listeners
@@ -76,6 +80,16 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, ActivityRandom.class);
             startActivity(intent);
         });
+
+        // Button to navigate to Activity To Add new Name
+        btnAddName.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ActivityAddName.class);
+            startActivity(intent);        });
+
+        // Button to navigate to Activity To Delete Name
+        btnDeleteName.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ActivityDeleteName.class);
+            startActivity(intent);        });
     }
 }
 

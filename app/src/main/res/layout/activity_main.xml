@@ -61,4 +61,26 @@
         android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"
         android:text="List by Random" />
+
+    <!-- Sixth Button: Add Name -->
+    <Button
+        android:id="@+id/btnAddName"
+        android:layout_width="200dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:text="Add Name" />
+
+    <!-- Seventh Button: Delete Name -->
+    <Button
+        android:id="@+id/btnDeleteName"
+        android:layout_width="200dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:text="Delete Name" />
 </LinearLayout>

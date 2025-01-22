@@ -156,6 +156,81 @@ public class NameController {
         });
     }
 
+    // Add a new name to the database and API
+    public void addName(String nameContent, String category) {
+        Name newName = new Name(nameContent, category);
+
+        // Add to the local database
+        boolean dbSuccess = databaseHelper.addName(newName);
+        if (dbSuccess) {
+            nameContents.add(newName); // Update the local list
+            callBackNames.successNames(nameContents); // Notify success via callback
+            Log.d("NameController", "Name added to the database: " + nameContent);
+        } else {
+            callBackNames.errorNames("Failed to add name to local database.");
+        }
+
+        // Add to the API (send a request to add the name remotely)
+        NameAPI nameAPI = getAPI();
+        Call<Void> call = nameAPI.addName(newName);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Log.d("NameController", "Name added to the API: " + nameContent);
+                } else {
+                    callBackNames.errorNames("Failed to add name to API.");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                callBackNames.errorNames("API request failed: " + t.getMessage());
+                t.printStackTrace();
+            }
+        });
+    }
+
+    // Delete a name from the database and API
+    public void deleteName(String nameToDelete) {
+        // Remove from the local database
+        boolean dbSuccess = databaseHelper.deleteName(nameToDelete);
+        if (dbSuccess) {
+            Iterator<Name> iterator = nameContents.iterator();
+            while (iterator.hasNext()) {
+                Name name = iterator.next();
+                if (name.getContent().equalsIgnoreCase(nameToDelete)) {
+                    iterator.remove(); // Remove the name from the local list
+                    break;
+                }
+            }
+            callBackNames.successNames(nameContents); // Notify success via callback
+            Log.d("NameController", "Name deleted from the local database: " + nameToDelete);
+        } else {
+            callBackNames.errorNames("Failed to delete name from local database.");
+        }
+
+        // Delete from the API (send a request to delete the name remotely)
+        NameAPI nameAPI = getAPI();
+        Call<Void> call = nameAPI.deleteName(nameToDelete);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Log.d("NameController", "Name deleted from the API: " + nameToDelete);
+                } else {
+                    callBackNames.errorNames("Failed to delete name from API.");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                callBackNames.errorNames("API request failed: " + t.getMessage());
+                t.printStackTrace();
+            }
+        });
+    }
+
     public interface CallBack_Name {
         void successNames(List<Name> names);
         void errorNames(String error);
