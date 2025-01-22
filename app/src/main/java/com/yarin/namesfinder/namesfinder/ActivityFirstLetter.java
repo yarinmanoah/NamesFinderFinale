@@ -55,18 +55,15 @@ public class ActivityFirstLetter extends AppCompatActivity {
         // Now you can use the selectedLetter wherever needed
         // For example, if you want to fetch names when a button is clicked
          searchButton = findViewById(R.id.searchButton);
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Check if a letter is selected
-                if (selectedLetter != null) {
-                    // Use the selected letter to fetch names
-                    nameController.fetchByLetter(selectedLetter);
+        searchButton.setOnClickListener(v -> {
+            // Check if a letter is selected
+            if (selectedLetter != null) {
+                // Use the selected letter to fetch names
+                nameController.fetchByLetter(selectedLetter);
 
-                } else {
-                    // Handle case where no letter is selected
-                    Toast.makeText(ActivityFirstLetter.this, "Please select a letter", Toast.LENGTH_SHORT).show();
-                }
+            } else {
+                // Handle case where no letter is selected
+                Toast.makeText(ActivityFirstLetter.this, "Please select a letter", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -78,13 +75,7 @@ public class ActivityFirstLetter extends AppCompatActivity {
 
     }
     private void initViews() {
-        ByFirstLetterButtonBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-
-            }
-        });
+        ByFirstLetterButtonBack.setOnClickListener(v -> finish());
     }
     public void updateNames(List<String> names) {
         StringBuilder stringBuilder = new StringBuilder();

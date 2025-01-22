@@ -33,13 +33,7 @@ public class ActivityRandom extends AppCompatActivity {
     }
 
     private void initViews() {
-        randomButtonBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-
-            }
-        });
+        randomButtonBack.setOnClickListener(v -> finish());
     }
 
     private void findViews() {

@@ -43,13 +43,7 @@ public class ActivityByCategory extends AppCompatActivity {
     }
 
     private void initViews() {
-        BycategoryButtonBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-
-            }
-        });
+        BycategoryButtonBack.setOnClickListener(v -> finish());
         letterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -63,17 +57,14 @@ public class ActivityByCategory extends AppCompatActivity {
             }
         });
         NameController nameController = new NameController(new MyCallback(ActivityByCategory.this));
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Check if a category is selected
-                if (selectedCategory != null) {
-                    // Use the selected category to fetch names
-                    nameController.fetchByCategory(selectedCategory);
-                } else {
-                    // Handle case where no category is selected
-                    Toast.makeText(ActivityByCategory.this, "Please select a category", Toast.LENGTH_SHORT).show();
-                }
+        searchButton.setOnClickListener(v -> {
+            // Check if a category is selected
+            if (selectedCategory != null) {
+                // Use the selected category to fetch names
+                nameController.fetchByCategory(selectedCategory);
+            } else {
+                // Handle case where no category is selected
+                Toast.makeText(ActivityByCategory.this, "Please select a category", Toast.LENGTH_SHORT).show();
             }
         });
     }

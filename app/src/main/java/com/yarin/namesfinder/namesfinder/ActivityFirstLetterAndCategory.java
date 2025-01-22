@@ -66,30 +66,22 @@ public class ActivityFirstLetterAndCategory extends AppCompatActivity {
     }
 
     private void initViews() {
-        a_ByFirstLetterButtonBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        a_ByFirstLetterButtonBack.setOnClickListener(v -> finish());
         MyCallback myCallback = new MyCallback(ActivityFirstLetterAndCategory.this);
 
         // Create an instance of NameController
         NameController nameController = new NameController(myCallback);
 
-        a_searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Check if both letter and category are selected
-                if (selectedLetter != null && selectedCategory != null) {
-                    // Perform your action here, for example:
-                    nameController.fetchByCategoryAndLetter(selectedCategory,selectedLetter);
-                    String message = "Selected Letter: " + selectedLetter + ", Selected Category: " + selectedCategory;
-                    //Toast.makeText(ActivityFirstLetterAndCategory.this, message, Toast.LENGTH_SHORT).show();
-                } else {
-                    // Handle case where not both are selected
-                    Toast.makeText(ActivityFirstLetterAndCategory.this, "Please select both Letter and Category", Toast.LENGTH_SHORT).show();
-                }
+        a_searchButton.setOnClickListener(v -> {
+            // Check if both letter and category are selected
+            if (selectedLetter != null && selectedCategory != null) {
+                // Perform your action here, for example:
+                nameController.fetchByCategoryAndLetter(selectedCategory,selectedLetter);
+                String message = "Selected Letter: " + selectedLetter + ", Selected Category: " + selectedCategory;
+                //Toast.makeText(ActivityFirstLetterAndCategory.this, message, Toast.LENGTH_SHORT).show();
+            } else {
+                // Handle case where not both are selected
+                Toast.makeText(ActivityFirstLetterAndCategory.this, "Please select both Letter and Category", Toast.LENGTH_SHORT).show();
             }
         });
     }
