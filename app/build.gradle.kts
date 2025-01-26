@@ -41,7 +41,7 @@ dependencies {
 
     //json parser
     implementation ("com.google.code.gson:gson:2.10.1")
-    implementation(project(":NameGenerator"))
+    implementation ("com.github.yarinmanoah:NamesFinderFinale:1.0.0")
 
     // Rest API calls
 

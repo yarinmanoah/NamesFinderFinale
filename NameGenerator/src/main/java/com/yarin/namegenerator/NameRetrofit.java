@@ -7,7 +7,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NameRetrofit {
-    private static final String BASE_URL = "https://names-finder-finale.vercel.app/";
+    private static final String BASE_URL = "https://names-finder-api.vercel.app/";
     private static NameRetrofit instance = null; // Singleton instance
     private final NameAPI nameAPI; // NameAPI instance
 
