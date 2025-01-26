@@ -1,5 +1,22 @@
 # Seminar Project
 
+The NameFinder Project is an Android-based application integrated with an API service designed to manage and manipulate name-related data.
+Users can interact with the app to search, add, categorize, or delete names.
+The project consists of two primary components:
+
+The NameFinder Android Application: A mobile app that communicates with the NameAPI to provide functionalities like searching names by letter, category, or fetching a random name.
+
+The NameAPI: A backend service built using Flask and MongoDB to store, retrieve, and manipulate name data.
+
+The API supports operations such as:
+
+Listing all names
+Filtering names by first letter
+Categorizing names
+Adding and deleting names
+Fetching a random name
+
+The API endpoints are designed to handle different operations with names, making it a comprehensive service for managing name-related tasks in the mobile application.
 A full-stack application combining a Flask API backend deployed on Vercel, MongoDB database, and an Android native application.
 
 ## Project Overview
@@ -13,7 +30,7 @@ This project consists of three main components:
 
 ### Backend
 - Flask (Python)
-- MongoDB
+- MongoDB Compass
 - Vercel (Deployment)
 
 ### Frontend/Mobile
@@ -78,7 +95,7 @@ SECRET_KEY=your_secret_key
 cd backend
 flask run
 ```
-The API will be available at `http://localhost:5000`
+The API will be available at `http://localhost:8088`
 
 ### Running the Android App
 
@@ -147,11 +164,16 @@ project/
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
+## Video Demonstration
+
+
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details
+Copyright (c) 2024 Yarin Manoah
+
 
 ## Contact
 
-Your Name - your.email@example.com
-Project Link: [https://github.com/yourusername/your-repo-name](https://github.com/yourusername/your-repo-name)
+Yarin Manoah - yarinmanoah1443@gmail.com
+Project Link: https://github.com/yarinmanoah/NamesFinderFinale
